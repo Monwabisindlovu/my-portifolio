@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherApp YOUR PERSONAL WEATHER STATION</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Define CSS styles */
+        body {
+            background-color: #ADD8E6; /* Sky blue background */
+        }
+
+        .container {
+            background-color: #010718; /* Black background */
+            padding: 20px;
+            border-radius: 10px;
+            color: rgb(30, 71, 134); /* White text for all elements */
+        }
+
+        .temperature {
+            background-color: #38afc7; /* Dark sky blue background for temperature */
+            padding: 5px;
+            border-radius: +5px;
+            color: rgb(240, 230, 230); /* White text for temperature */
+        }
+
+        .weather-details {
+            background-color: #3da1b7; /* Black background for other details */
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 10px;
+            color: rgb(208, 202, 202); /* White text for other details */
+        }
+
+        .weather-details p {
+            margin-bottom: 20px;
+        }
+
+        .card-body img {
+            background-color: #4a98e0; /* Dark sky blue background for weather icon */
+            padding: px;
+            border-radius: -1px;
+        }
+
+        .daily-forecast {
+            background-color: #22148f; /* Sky blue background for daily forecast */
+            padding: 20px;
+            border-radius: 10px;
+            color: rgb(213, 203, 203); /* White text for all elements */
+        }
+
+        /* Additional styles for banner */
+        .banner {
+            background-image: url('path/to/banner.jpg');
+            background-size: cover;
+            padding: 50px 0;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <h1 class="display-4">WeatherApp - Welcome to Your Personal Weather Station</h1>
+            <p class="lead">Enter your location below to get the weather forecast</p>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location" value="{{ location }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Get Weather</button>
+            </form>
+        </div>
+        {% if weather_data %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Weather Details</h5>
+                <p class="temperature">Temperature: {{ '%.2f'|format(weather_data.temperature) }}°C</p>
+                <div class="weather-details">
+                    <p>Humidity: {{ weather_data.humidity }}%</p>
+                    <p>Latitude: {{ weather_data.latitude }}</p>
+                    <p>Longitude: {{ weather_data.longitude }}</p>
+                    <p>Wind Speed: {{ weather_data.wind_speed }} m/s</p>
+                    <p>{{ weather_data.weather_description }}</p>
+                </div>
+                <img src="http://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" alt="{{ weather_data.weather_description }}">
+            </div>
+        </div>
+        <div class="daily-forecast mt-3">
+            <h5 class="text-center">Daily Forecast:</h5>
+            <div class="row">
+                {% for forecast_item in weather_data.forecast %}
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ forecast_item.dt | datetime('%Y-%m-%d %H:%M:%S') }}</h5>
+                            <p class="temperature">Temperature: {{ forecast_item.main.feels_like | round(2) }}°C</p>
+                            <p class="weather-details">Humidity: {{ forecast_item.main.humidity }}%</p>
+                            <p class="weather-details">Wind Speed: {{ forecast_item.wind.speed }} m/s</p>
+                            <p class="weather-details">{{ forecast_item.weather[0].description }}</p>
+                            <img src="http://openweathermap.org/img/wn/{{ forecast_item.weather[0].icon }}@2x.png" alt="{{ forecast_item.weather[0].description }}">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
