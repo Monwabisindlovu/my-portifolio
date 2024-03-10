@@ -58,6 +58,18 @@
             text-align: center;
             color: white;
         }
+
+        .hourly-forecast {
+            background-color: #282c34; /* Dark blue background for hourly forecast */
+            padding: 20px;
+            border-radius: 10px;
+            color: white; /* White text for hourly forecast */
+            margin-top: 20px;
+        }
+
+        .hourly-forecast .hour {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -77,30 +89,42 @@
         <div class="card mt-3">
             <div class="card-body">
                 <h5 class="card-title">Weather Details</h5>
-                <p class="temperature">Temperature: {{ '%.2f'|format(weather_data.temperature) }}°C</p>
+                <p class="temperature">Temperature: {{ weather_data.current.temperature }}°C</p>
                 <div class="weather-details">
-                    <p>Humidity: {{ weather_data.humidity }}%</p>
-                    <p>Latitude: {{ weather_data.latitude }}</p>
-                    <p>Longitude: {{ weather_data.longitude }}</p>
-                    <p>Wind Speed: {{ weather_data.wind_speed }} m/s</p>
-                    <p>{{ weather_data.weather_description }}</p>
+                    <p>Humidity: {{ weather_data.current.humidity }}%</p>
+                    <p>Latitude: {{ weather_data.current.latitude }}</p>
+                    <p>Longitude: {{ weather_data.current.longitude }}</p>
+                    <p>Wind Speed: {{ weather_data.current.wind_speed }} m/s</p>
+                    <p>{{ weather_data.current.weather_description }}</p>
                 </div>
-                <img src="http://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" alt="{{ weather_data.weather_description }}">
+                <img src="{{ weather_data.current.icon }}" alt="{{ weather_data.current.weather_description }}">
+            </div>
+        </div>
+        <div class="hourly-forecast mt-3">
+            <h5 class="text-center">Hourly Forecast:</h5>
+            <div class="row">
+                {% for hour in weather_data.current.hourly_forecast %}
+                <div class="col-md-3 hour">
+                    <p>{{ hour.time }}</p>
+                    <p>Temperature: {{ hour.temp_c }}°C</p>
+                    <p>Weather: {{ hour.condition.text }}</p>
+                    <img src="{{ hour.condition.icon }}" alt="{{ hour.condition.text }}">
+                </div>
+                {% endfor %}
             </div>
         </div>
         <div class="daily-forecast mt-3">
             <h5 class="text-center">Daily Forecast:</h5>
             <div class="row">
-                {% for forecast_item in weather_data.forecast %}
+                {% for day in weather_data.daily_forecast %}
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">{{ forecast_item.dt | datetime('%Y-%m-%d %H:%M:%S') }}</h5>
-                            <p class="temperature">Temperature: {{ forecast_item.main.feels_like | round(2) }}°C</p>
-                            <p class="weather-details">Humidity: {{ forecast_item.main.humidity }}%</p>
-                            <p class="weather-details">Wind Speed: {{ forecast_item.wind.speed }} m/s</p>
-                            <p class="weather-details">{{ forecast_item.weather[0].description }}</p>
-                            <img src="http://openweathermap.org/img/wn/{{ forecast_item.weather[0].icon }}@2x.png" alt="{{ forecast_item.weather[0].description }}">
+                            <h5 class="card-title">{{ day.date }}</h5>
+                            <p class="temperature">Max Temperature: {{ day.max_temp }}°C</p>
+                            <p class="temperature">Min Temperature: {{ day.min_temp }}°C</p>
+                            <p class="weather-details">Weather: {{ day.weather_description }}</p>
+                            <img src="{{ day.icon }}" alt="{{ day.weather_description }}">
                         </div>
                     </div>
                 </div>
@@ -111,4 +135,3 @@
     </div>
 </body>
 </html>
-
