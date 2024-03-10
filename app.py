@@ -21,12 +21,13 @@ def get_weather_data(location):
         current = data['current']
         forecast_days = data['forecast']['forecastday']
 
-        # Fetch hourly forecast for the current day
+        # Fetch hourly forecast for the current day starting from the current hour
         current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        current_hour = datetime.datetime.now().hour
         hourly_forecast = []
         for forecast in forecast_days:
             if forecast['date'] == current_date:
-                hourly_forecast = forecast['hour']
+                hourly_forecast = forecast['hour'][current_hour:]
                 break
 
         daily_forecast = []
