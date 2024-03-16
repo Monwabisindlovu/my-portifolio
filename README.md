@@ -8,6 +8,7 @@ Final Project Blog Article: https://docs.google.com/document/d/1P77hHWd9q2HxUP8P
 
 Author(s) LinkedIn: Author Monwabisi Ndlovu
 
+screenshort https://github.com/Monwabisindlovu/my-portifolio/blob/main/app-apllication.jpg?raw=true
 
 Installation
 To use WeatherApp, follow these steps:
