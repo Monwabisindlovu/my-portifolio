@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeatherApp YOUR PERSONAL WEATHER STATION</title>
+    <title>WeatherApp - Your Personal Weather Station</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         /* Define CSS styles */
         body {
-            background-color: #ADD8E6; /* Sky blue background */
+            background-color: #123542; /* Sky blue background */
         }
 
+        /* Container Styles */
         .container {
             background-color: #010718; /* Black background */
             padding: 20px;
@@ -18,47 +20,50 @@
             color: rgb(30, 71, 134); /* White text for all elements */
         }
 
+        /* Temperature Styles */
         .temperature {
             background-color: #38afc7; /* Dark sky blue background for temperature */
             padding: 5px;
-            border-radius: +5px;
-            color: rgb(240, 230, 230); /* White text for temperature */
-        }
-
-        .weather-details {
-            background-color: #3da1b7; /* Black background for other details */
-            padding: 5px;
             border-radius: 5px;
-            margin-top: 10px;
-            color: rgb(208, 202, 202); 
+            color: rgb(16, 16, 16); /* White text for temperature */
         }
 
-        .weather-details p {
-            margin-bottom: 20px;
+        /* Weather Details Styles */
+        .weather-details {
+            background-color: #060c1a; /* Sky blue background for weather details */
+            padding: 10px;
+            border-radius: 5px;
+            color: rgb(238, 240, 244); /* Dark blue text for weather details */
         }
 
+        /* Weather Icon Styles */
         .card-body img {
-            background-color: #4a98e0; /* Dark sky blue background for weather icon */
-            padding: px;
-            border-radius: -1px;
+            background-color: #111c26; /* Dark sky blue background for weather icon */
+            padding: 2px;
+            border-radius: 3px;
+            width: 50px; /* Adjust width for mobile */
+            height: 50px; /* Adjust height for mobile */
         }
 
+        /* Daily Forecast Styles */
         .daily-forecast {
-            background-color: #22148f; /* Sky blue background for daily forecast */
+            background-color: #0a0a11; /* Sky blue background for daily forecast */
             padding: 20px;
             border-radius: 10px;
             color: rgb(213, 203, 203); /* White text for all elements */
+            font-weight: bold;
         }
 
-        /* Additional styles for banner */
+        /* Banner Styles */
         .banner {
-            background-image: url('path/to/banner.jpg');
+            background-image: url('https://i.pinimg.com/236x/a4/26/89/a426893625d4729a87cdd9593b0ba73e.jpg');
             background-size: cover;
             padding: 50px 0;
             text-align: center;
             color: white;
         }
 
+        /* Hourly Forecast Styles */
         .hourly-forecast {
             background-color: #282c34; /* Dark blue background for hourly forecast */
             padding: 20px;
@@ -67,16 +72,33 @@
             margin-top: 20px;
         }
 
-        .hourly-forecast .hour {
-            margin-bottom: 10px;
+        /* Warnings Styles */
+        .warnings {
+            background-color: #ffcc00; /* Yellow background for warnings */
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #b71616; /* Dark text for warnings */
+        }
+
+        /* Recommendations Styles */
+        .recommendations {
+            background-color: #4CAF50; /* Green background for recommendations */
+            padding: 20px;
+            border-radius: 10px;
+            color: white; /* White text for recommendations */
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
+    <!-- Main Container -->
     <div class="container">
+        <!-- Banner Section -->
         <div class="banner">
             <h1 class="display-4">WeatherApp - Welcome to Your Personal Weather Station</h1>
             <p class="lead">Enter your location below to get the weather forecast</p>
+            <!-- Form for Location Input -->
             <form method="POST">
                 <div class="form-group">
                     <label for="location">Location:</label>
@@ -85,21 +107,36 @@
                 <button type="submit" class="btn btn-primary">Get Weather</button>
             </form>
         </div>
+        
+        <!-- Display Location -->
+        <p id="display-location">Current location: {{ location }}</p>
+        
+        <!-- Display Weather Results -->
+        {% if location %}
+        <div class="selected-location mt-3">
+            <h5>Weather results for {{ location }}</h5>
+        </div>
+        {% endif %}
+        
+        <!-- Weather Data Section -->
         {% if weather_data %}
         <div class="card mt-3">
             <div class="card-body">
                 <h5 class="card-title">Weather Details</h5>
-                <p class="temperature">Temperature: {{ weather_data.current.temperature }}°C</p>
+                <!-- Display Current Weather Details -->
                 <div class="weather-details">
+                    <p>Temperature: {{ weather_data.current.temperature }}°C</p>
                     <p>Humidity: {{ weather_data.current.humidity }}%</p>
                     <p>Latitude: {{ weather_data.current.latitude }}</p>
                     <p>Longitude: {{ weather_data.current.longitude }}</p>
                     <p>Wind Speed: {{ weather_data.current.wind_speed }} m/s</p>
                     <p>{{ weather_data.current.weather_description }}</p>
                 </div>
+                <!-- Display Current Weather Icon -->
                 <img src="{{ weather_data.current.icon }}" alt="{{ weather_data.current.weather_description }}">
             </div>
         </div>
+        <!-- Hourly Forecast Section -->
         <div class="hourly-forecast mt-3">
             <h5 class="text-center">Hourly Forecast:</h5>
             <div class="row">
@@ -113,6 +150,7 @@
                 {% endfor %}
             </div>
         </div>
+        <!-- Daily Forecast Section -->
         <div class="daily-forecast mt-3">
             <h5 class="text-center">Daily Forecast:</h5>
             <div class="row">
@@ -120,7 +158,7 @@
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">{{ day.date }}</h5>
+                            <h5 class="card-title weather-details">{{ day.date }}</h5>
                             <p class="temperature">Max Temperature: {{ day.max_temp }}°C</p>
                             <p class="temperature">Min Temperature: {{ day.min_temp }}°C</p>
                             <p class="weather-details">Weather: {{ day.weather_description }}</p>
@@ -132,6 +170,53 @@
             </div>
         </div>
         {% endif %}
+        <!-- Warnings Section -->
+        {% if warnings %}
+        <div class="warnings mt-3">
+            <h5 class="text-center">Weather Warnings:</h5>
+            <ul>
+                {% for warning in warnings %}
+                    <li>{{ warning }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <!-- Recommendations Section -->
+        {% if recommendations %}
+        <div class="recommendations mt-3">
+            <h5 class="text-center">Personalized Recommendations:</h5>
+            <ul>
+                {% for recommendation in recommendations %}
+                    <li>{{ recommendation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
     </div>
+
+    <!-- JavaScript to update the displayed location -->
+    <script>
+        const locationInput = document.getElementById('location');
+        const displayLocation = document.getElementById('display-location');
+        const form = document.querySelector('form');
+
+        // Function to update the displayed location
+        function updateDisplayedLocation() {
+            displayLocation.textContent = 'Current location: ' + locationInput.value;
+        }
+
+        // Update the displayed location when the input value changes
+        locationInput.addEventListener('input', updateDisplayedLocation);
+
+        // Listen for form submission
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            updateDisplayedLocation(); // Update the display location
+            this.submit(); // Submit the form
+        });
+
+        // Call the function to set the initial displayed location
+        updateDisplayedLocation();
+    </script>
 </body>
 </html>
