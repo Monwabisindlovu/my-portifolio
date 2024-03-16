@@ -4,7 +4,8 @@ WeatherApp is a Flask-based web application that provides users with weather for
 
 Deployed Site: WeatherApp on https://monwabisindlovu.github.io/portfolio-landing_page/
 
-Final Project Blog Article: https://docs.google.com/document/d/1P77hHWd9q2HxUP8P89IQ_PgWZFjudwsI41uvhKZp9PM/edit?usp=sharing
+Final Project Blog Article: https://docs.google.com/document/d/1UcgzvF2j7LfDIF_oBOrfzeS4iYYg8gAFTtARiOcxOxg/edit?usp=sharing
+
 
 Author(s) LinkedIn: Author Monwabisi Ndlovu
 
